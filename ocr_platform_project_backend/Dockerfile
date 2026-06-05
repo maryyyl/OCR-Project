@@ -10,13 +10,14 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Tesseract OCR installation
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-eng \
+    tesseract-ocr-mkd \
     && rm -rf /var/lib/apt/lists/*
 
-# Directory for uploads and Google credentials
+ENV TESSDATA_PREFIX=/usr/share/tesseract-ocr/4.00/tessdata
+
 RUN mkdir -p /app/uploads /app/keys
 
 COPY --from=builder /app/target/*.jar app.jar

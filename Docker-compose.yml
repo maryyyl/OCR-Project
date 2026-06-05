@@ -1,0 +1,62 @@
+services:
+  mysql:
+    image: mysql:8.1
+    container_name: ocr-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ocr_platform
+      MYSQL_USER: ocr_user
+      MYSQL_PASSWORD: ocr_pass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - ocr-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./ocr_platform_project_backend
+    container_name: ocr-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ocr_platform?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ocr_user
+      SPRING_DATASOURCE_PASSWORD: ocr_pass
+      GOOGLE_APPLICATION_CREDENTIALS: /app/keys/ocr-credentials.json
+    volumes:
+      - ./keys/ocr-credentials.json:/app/keys/ocr-credentials.json
+      - uploads_data:/app/uploads
+    ports:
+      - "8080:8080"
+    networks:
+      - ocr-network
+
+  frontend:
+    build:
+      context: ./ocr-frontend
+    container_name: ocr-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - ocr-network
+
+volumes:
+  mysql_data:
+  uploads_data:
+
+networks:
+  ocr-network:
+    driver: bridge

@@ -88,7 +88,8 @@ public class OcrService {
     }
     private String processWithTesseract(BufferedImage image) throws TesseractException {
         Tesseract tesseract = new Tesseract();
-        tesseract.setDatapath("C:/Program Files/Tesseract-OCR/");
+        String tessdata = System.getenv("TESSDATA_PREFIX");
+        tesseract.setDatapath(tessdata != null ? tessdata : "/usr/share/tesseract-ocr/4.00/tessdata");
         tesseract.setLanguage("mkd");
         return tesseract.doOCR(image);
     }
