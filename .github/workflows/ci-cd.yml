@@ -29,6 +29,6 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./ocr_platform_project_frontend
+          context: ./ocr_platform-frontend
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ocr-frontend:latest
