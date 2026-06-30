@@ -23,7 +23,7 @@ let intervalId = null;
 
 async function fetchStats() {
   try {
-    const res = await axios.get("http://localhost:8080/api/documents/stats");
+    const res = await axios.get("/api/documents/stats");
     stats.value = res.data;
   } catch (e) {
     console.error("Грешка при вчитување на статистики:", e);

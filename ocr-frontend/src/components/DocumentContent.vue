@@ -53,7 +53,7 @@ const goBack = () => {
 
 onMounted(async () => {
   const docId = route.params.id;
-  const res = await fetch(`http://localhost:8080/api/documents/${docId}/text`);
+  const res = await fetch(`/api/documents/${docId}/text`);
   const data = await res.json();
   document.value = data;
 });

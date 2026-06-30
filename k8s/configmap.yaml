@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ocr-config
+  namespace: ocr-platform
+data:
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/ocr_platform?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  SPRING_DATASOURCE_USERNAME: "ocr_user"
+  TESSDATA_PREFIX: "/usr/share/tesseract-ocr/4.00/tessdata"
+  upload.dir: "uploads"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ocr-secret
+  namespace: ocr-platform
+type: Opaque
+stringData:
+  SPRING_DATASOURCE_PASSWORD: "ocr_pass"
+  MYSQL_ROOT_PASSWORD: "rootpass"
+  MYSQL_PASSWORD: "ocr_pass"

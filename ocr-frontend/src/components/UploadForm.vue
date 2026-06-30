@@ -210,7 +210,7 @@ const uploadFile = async () => {
   message.value = "Испраќање документ...";
 
   try {
-    const res = await fetch("http://localhost:8080/api/documents/upload", {
+    const res = await fetch("/api/documents/upload", {
       method: "POST",
       body: formData,
     });
@@ -226,7 +226,7 @@ const uploadFile = async () => {
     message.value = "Документот е испратен! OCR процесирањето започна.";
 
     const checkProgress = async () => {
-      const res = await fetch(`http://localhost:8080/api/documents/${docId}`);
+      const res = await fetch(`/api/documents/${docId}`);
       const data = await res.json();
       documentData.value = data;
 
@@ -260,7 +260,7 @@ async function saveDocumentData() {
 
   saving.value = true;
   try {
-    const response = await axios.put(`http://localhost:8080/api/documents/${documentData.value.id}`, {
+    const response = await axios.put(`/api/documents/${documentData.value.id}`, {
       extractedText: documentData.value.extractedText
     });
 

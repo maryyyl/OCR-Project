@@ -4,12 +4,12 @@ services:
     container_name: ocr-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ocr_platform
-      MYSQL_USER: ocr_user
-      MYSQL_PASSWORD: ocr_pass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -29,15 +29,15 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ocr_platform?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: ocr_user
-      SPRING_DATASOURCE_PASSWORD: ocr_pass
-      GOOGLE_APPLICATION_CREDENTIALS: /app/keys/ocr-credentials.json
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
     volumes:
       - ./keys/ocr-credentials.json:/app/keys/ocr-credentials.json
       - uploads_data:/app/uploads
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT}:8080"
     networks:
       - ocr-network
 
@@ -49,7 +49,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "80:80"
+      - "${FRONTEND_PORT}:80"
     networks:
       - ocr-network
 

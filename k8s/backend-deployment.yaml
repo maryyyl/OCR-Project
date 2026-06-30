@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocr-backend
+  namespace: ocr-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocr-backend
+  template:
+    metadata:
+      labels:
+        app: ocr-backend
+    spec:
+      containers:
+        - name: ocr-backend
+          image: maryyyl/ocr-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ocr-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ocr-config
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ocr-secret
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: TESSDATA_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: ocr-config
+                  key: TESSDATA_PREFIX
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: ocr-config
+                  key: SPRING_JPA_HIBERNATE_DDL_AUTO

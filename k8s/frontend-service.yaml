@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocr-frontend
+  namespace: ocr-platform
+spec:
+  selector:
+    app: ocr-frontend
+  ports:
+    - port: 80
+      targetPort: 80

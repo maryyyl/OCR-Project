@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 docker-compose.yml
+../keys
 src/main/resources/application-local.properties
 ###papka kade se zacuvuvaat site uploaded pdf-s###
 /uploads

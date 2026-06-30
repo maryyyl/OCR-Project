@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocr-frontend
+  namespace: ocr-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocr-frontend
+  template:
+    metadata:
+      labels:
+        app: ocr-frontend
+    spec:
+      containers:
+        - name: ocr-frontend
+          image: maryyyl/ocr-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

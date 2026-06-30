@@ -103,7 +103,7 @@ const goBack = () => {
 
 const fetchDocuments = async () => {
   try {
-    const res = await fetch("http://localhost:8080/api/documents");
+    const res = await fetch("/api/documents");
     documents.value = await res.json();
   } catch (err) {
     console.error("Грешка при вчитување документи:", err);
@@ -121,7 +121,7 @@ const liveSearch = () => {
   clearTimeout(timeoutId);
   timeoutId = setTimeout(async () => {
     try {
-      let url = "http://localhost:8080/api/documents";
+      let url = "/api/documents";
 
       const params = new URLSearchParams();
       if (searchAuthor.value) params.append("author", searchAuthor.value);
@@ -129,7 +129,7 @@ const liveSearch = () => {
       if (filterModel.value) params.append("model", filterModel.value);
 
       if ([...params].length > 0) {
-        url = `http://localhost:8080/api/documents/search?${params.toString()}`;
+        url = `/api/documents/search?${params.toString()}`;
       }
 
       const res = await fetch(url);
@@ -143,7 +143,7 @@ const deleteDocument = async (id) => {
   if (!confirm('Дали сте сигурни дека сакате да го избришете овој документ?')) return;
 
   try {
-    await fetch(`http://localhost:8080/api/documents/${id}`, {
+    await fetch(`/api/documents/${id}`, {
       method: 'DELETE'
     });
     documents.value = documents.value.filter(doc => doc.id !== id);

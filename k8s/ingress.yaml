@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ocr-ingress
+  namespace: ocr-platform
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ocr-platform.local
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: ocr-backend
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ocr-frontend
+                port:
+                  number: 80

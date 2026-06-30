@@ -37,7 +37,7 @@ const chartOptions = {
 
 async function fetchChartData() {
   try {
-    const res = await axios.get("http://localhost:8080/api/documents/author-stats");
+    const res = await axios.get("/api/documents/author-stats");
     const labels = res.data.map(item => item.author);
     const data = res.data.map(item => item.count);
 
